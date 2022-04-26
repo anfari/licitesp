@@ -1,0 +1,14 @@
+{
+  "name": "web_scraper",
+  "version": "1.0.0",
+  "description": "Obtener informacion sobre licitaciones",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "anfari",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^13.6.0"
+  }
+}
