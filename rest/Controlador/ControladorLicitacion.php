@@ -16,21 +16,28 @@
         }
     }
 
+    if (isset($_POST['peracion']) && $_POST['operacion'] == 'listar') {
+        $numPag = 1;
+        $tamPag = 2;
+        $licitaciones = ModeloLicitacion::listar($numPag, $tamPag);
+        return $licitaciones;
+    }
+
     if (isset($_POST['operacion']) && $_POST['operacion'] == 'obtener') {
         $id = $_POST['id'];
-        $licitacion = Licitacion::buscarLicitacion($id);
+        $licitacion = ModeloLicitacion::buscarLicitacion($id);
         return $licitacion;
     }
     
     if (isset($_POST['operacion']) && $_POST['operacion'] == "insertar") {
         $atributos = [
-            "id" => $_POST['id'],
+            "expediente" => $_POST['expediente'],
             "organo_contratacion" => $_POST['organo_contratacion'],
             "objeto_contrato" => $_POST['objeto_contrato'],
             "valor_estimado" => floatval($_POST['valor_estimado']),
             "tipo" => $_POST['tipo'],
             "lugar_ejecucion" => $_POST['lugar_ejecucion'],
-            "plazo_ejecucion" => $_POST['plazo_ejecucion'],
+            "plazo" => $_POST['plazo'],
             "url" => $_POST['url']
         ];
         $licitacion = Licitacion::getLicitacion($atributos);
@@ -54,13 +61,13 @@
     
     if (isset($_POST['operacion']) && $_POST['operacion'] == "actualizar") {
         $atributos = [
-            "id" => $_POST['id'],
+            "expediente" => $_POST['expediente'],
             "organo_contratacion" => $_POST['organo_contratacion'],
             "objeto_contrato" => $_POST['objeto_contrato'],
             "valor_estimado" => floatval($_POST['valor_estimado']),
             "tipo" => $_POST['tipo'],
             "lugar_ejecucion" => $_POST['lugar_ejecucion'],
-            "plazo_ejecucion" => $_POST['plazo_ejecucion'],
+            "plazo" => $_POST['plazo'],
             "url" => $_POST['url']
         ];
         $licitacion = Licitacion::getLicitacion($atributos);

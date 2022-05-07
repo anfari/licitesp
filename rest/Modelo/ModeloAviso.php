@@ -1,12 +1,11 @@
 <?php
     namespace Tema05\Ejercicio0304\Modelo;
-    //use Tema05\Ejercicio0304\Modelo\Producto;
     use PDO, PDOException;
     require_once ("Aviso.php");
     
     class ModeloAviso {
         public static function consulta(string $sql) {
-            [$host,$usuario,$passwd,$bd]=['localhost','gestisimal','gestisimal2021','gestisimal'];
+            [$host,$usuario,$passwd,$bd]=['localhost','licitesp','12345678','licitesp'];
             try {
                 $conexion = new PDO("mysql:host=$host;dbname=$bd;charset=utf8", $usuario, $passwd);
                 $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

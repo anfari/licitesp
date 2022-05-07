@@ -18,7 +18,7 @@
 
     if (isset($_POST['operacion']) && $_POST['operacion'] == 'obtener') {
         $id = $_POST['id'];
-        $usuario = Usuario::buscarUsuario($id);
+        $usuario = ModeloUsuario::buscarUsuario($id);
         return $usuario;
     }
     
@@ -53,14 +53,13 @@
     
     if (isset($_POST['operacion']) && $_POST['operacion'] == "actualizar") {
         $atributos = [
-            "id" => $_POST['id'],
-            "organo_contratacion" => $_POST['organo_contratacion'],
-            "objeto_contrato" => $_POST['objeto_contrato'],
-            "valor_estimado" => floatval($_POST['valor_estimado']),
-            "tipo" => $_POST['tipo'],
-            "lugar_ejecucion" => $_POST['lugar_ejecucion'],
-            "plazo_ejecucion" => $_POST['plazo_ejecucion'],
-            "url" => $_POST['url']
+            "id" => intval($_POST['id']),
+            "nombre" => $_POST['nombre'],
+            "password" => $_POST['password'],
+            "email" => $_POST['email'],
+            "localidad" => $_POST['localidad'],
+            "localidades_interes" => $_POST['localidades_interes'],
+            "sectores_interes" => $_POST['sectores_interes']
         ];
         $usuario = Usuario::getUsuario($atributos);
         $resultado = ModeloUsuario::actualizar($usuario);

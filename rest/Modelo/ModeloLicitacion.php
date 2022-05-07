@@ -1,12 +1,11 @@
 <?php
     namespace Tema05\Ejercicio0304\Modelo;
-    //use Tema05\Ejercicio0304\Modelo\Producto;
     use PDO, PDOException;
     require_once ("Licitacion.php");
     
     class ModeloLicitacion {
         public static function consulta(string $sql) {
-            [$host,$usuario,$passwd,$bd]=['localhost','gestisimal','gestisimal2021','gestisimal'];
+            [$host,$usuario,$passwd,$bd]=['localhost','licitesp','12345678','licitesp'];
             try {
                 $conexion = new PDO("mysql:host=$host;dbname=$bd;charset=utf8", $usuario, $passwd);
                 $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -24,8 +23,8 @@
                     return false;
                 }
             }
-            [$id, $organo_contratacion, $objeto_contrato, $valor_estimado, $tipo, $lugar_ejecucion, $plazo_ejecucion, $url] = [$licitacion->id, $licitacion->organo_contratacion, $licitacion->objeto_contrato, $licitacion->valor_estimado, $licitacion->tipo, $licitacion->lugar_ejecucion, $licitacion->plazo_ejecucion, $licitacion->url];
-            $resultado = self::consulta("INSERT INTO licitacion VALUES($id, '$organo_contratacion', '$objeto_contrato', $valor_estimado, '$tipo', '$lugar_ejecucion', '$plazo_ejecucion', '$url');");
+            [$id, $expediente, $organo_contratacion, $objeto_contrato, $valor_estimado, $tipo, $lugar_ejecucion, $plazo, $url] = [$licitacion->id, $licitacion->expediente, $licitacion->organo_contratacion, $licitacion->objeto_contrato, $licitacion->valor_estimado, $licitacion->tipo, $licitacion->lugar_ejecucion, $licitacion->plazo, $licitacion->url];
+            $resultado = self::consulta("INSERT INTO licitacion VALUES(null, '$expediente', '$organo_contratacion', '$objeto_contrato', $valor_estimado, '$tipo', '$lugar_ejecucion', '$plazo', '$url');");
             if ($resultado->rowCount() == 1) {
                 return true;
             }
@@ -41,8 +40,8 @@
         }
         
         public static function actualizar(Licitacion $licitacion): bool {
-            [$id, $organo_contratacion, $objeto_contrato, $valor_estimado, $tipo, $lugar_ejecucion, $plazo_ejecucion, $url] = [$licitacion->id, $licitacion->organo_contratacion, $licitacion->objeto_contrato, $licitacion->valor_estimado, $licitacion->tipo, $licitacion->lugar_ejecucion, $licitacion->plazo_ejecucion, $licitacion->url];
-            $resultado = self::consulta("UPDATE licitacion SET organo_contratacion='$organo_contratacion', objeto_contrato='$objeto_contrato', valor_estimado=$valor_estimado, tipo='$tipo', lugar_ejecucion='$lugar_ejecucion', plazo_ejecucion='$plazo_ejecucion', url='$url' WHERE id=$licitacion->id");
+            [$id, $expediente, $organo_contratacion, $objeto_contrato, $valor_estimado, $tipo, $lugar_ejecucion, $plazo, $url] = [$licitacion->id, $licitacion->expediente, $licitacion->organo_contratacion, $licitacion->objeto_contrato, $licitacion->valor_estimado, $licitacion->tipo, $licitacion->lugar_ejecucion, $licitacion->plazo, $licitacion->url];
+            $resultado = self::consulta("UPDATE licitacion SET expediente='$expediente', organo_contratacion='$organo_contratacion', objeto_contrato='$objeto_contrato', valor_estimado=$valor_estimado, tipo='$tipo', lugar_ejecucion='$lugar_ejecucion', plazo='$plazo', url='$url' WHERE id=$licitacion->id");
             if ($resultado->rowCount() == 1) {
                 return true;
             }
@@ -59,7 +58,7 @@
             return $lista;
         }
         
-        public static function numPLicitaciones() {
+        public static function numLicitaciones() {
             $resultado = self::consulta("SELECT count(*) as numLicitaciones FROM licitacion");
             $count = $resultado->fetch(PDO::FETCH_ASSOC);
             return intval($count['numLicitaciones']);

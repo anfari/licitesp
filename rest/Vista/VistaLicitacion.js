@@ -24,15 +24,6 @@ function peticion(form) {
                 case "eliminar":
                     mensaje = "eliminado";
                     break;
-                case "entrada":
-                    mensaje = "agregado";
-                    break;
-                case "salida":
-                    mensaje = "retirado";
-                    break;
-                case "comprar":
-                    mensaje = "añadido";
-                    break;
                 case "borrarProducto":
                     mensaje = "borrado";
                     break;
@@ -48,7 +39,7 @@ function peticion(form) {
 function crearFormulario(inputs, operacion, cantidad = null) {
     let form = document.createElement("form");
     form.setAttribute("method", "post");
-    form.setAttribute("action", "../Controlador/ControladorProducto.php")
+    form.setAttribute("action", "../Controlador/ControladorLicitacion.php")
     let op = document.createElement("input");
     op.setAttribute("name", "operacion");
     op.setAttribute("value", operacion);
@@ -91,28 +82,6 @@ function actualizar(codigo) {
     crearFormulario(inputs, "actualizar");
 }
 
-function entrada(codigo) {
-    let inputs = codigo.getElementsByTagName("input");
-    let cantidad = prompt("Cantidad:");
-    let inputCantidad = document.createElement("input");
-    inputCantidad.setAttribute("name", "cantidad");
-    inputCantidad.setAttribute("value", cantidad);
-    //inputs.appendChild(inputCantidad);
-    
-    crearFormulario(inputs, "entrada", inputCantidad);
-}
-
-function salida(codigo) {
-    let inputs = codigo.getElementsByTagName("input");
-    let cantidad = prompt("Cantidad:");
-    let inputCantidad = document.createElement("input");
-    inputCantidad.setAttribute("name", "cantidad");
-    inputCantidad.setAttribute("value", cantidad);
-    //inputs.appendChild(inputCantidad);
-
-    crearFormulario(inputs, "salida", inputCantidad);
-}
-
 function primeraPag() {
     window.location.href = ("../Controlador/Init.php?pag=1");
 }
@@ -129,15 +98,8 @@ function ultimaPag(pag) {
     window.location.href = "../Controlador/Init.php?pag=" + pag;
 }
 
-function comprar(codigo) {
-    let inputs = codigo.getElementsByTagName("input");
-    let inputCantidad = document.createElement("input");
-    inputCantidad.setAttribute("name", "cantidad");
-    inputCantidad.setAttribute("value", 1);
-    crearFormulario(inputs, "comprar", inputCantidad);
-}
-
-function borrarProducto(codigo) {
+/*
+function borrar(codigo) {
     let inputs = codigo.getElementsByTagName("input");
     let inputCodigo = document.createElement("input");
     inputCodigo.setAttribute("name", "codigo");
@@ -147,8 +109,4 @@ function borrarProducto(codigo) {
     inputCantidad.setAttribute("value", 1);
     console.log(codigo.id);
     crearFormulario(inputs, "borrarProducto", inputCantidad);
-}
-
-function factura() {
-    window.location.href = "../Vista/Factura.php";
-}
+}*/

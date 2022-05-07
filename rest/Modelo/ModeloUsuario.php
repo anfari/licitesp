@@ -1,12 +1,11 @@
 <?php
     namespace Tema05\Ejercicio0304\Modelo;
-    //use Tema05\Ejercicio0304\Modelo\Producto;
     use PDO, PDOException;
     require_once ("Usuario.php");
     
     class ModeloUsuario {
         public static function consulta(string $sql) {
-            [$host,$usuario,$passwd,$bd]=['localhost','gestisimal','gestisimal2021','gestisimal'];
+            [$host,$usuario,$passwd,$bd]=['localhost','licitesp','12345678','licitesp'];
             try {
                 $conexion = new PDO("mysql:host=$host;dbname=$bd;charset=utf8", $usuario, $passwd);
                 $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -25,7 +24,7 @@
                 }
             }
             [$id, $nombre, $password, $email, $localidad, $localidades_interes, $sectores_interes] = [$usuario->id, $usuario->nombre, $usuario->password, $usuario->email, $usuario->localidad, $usuario->localidades_interes, $usuario->sectores_interes];
-            $resultado = self::consulta("INSERT INTO usuario VALUES($id, '$nombre', '$password', '$email', '$localidad', '$localidades_interes', '$sectores_interes');");
+            $resultado = self::consulta("INSERT INTO usuario VALUES($id, '$nombre', '$email', '$password', '$localidad', '$localidades_interes', '$sectores_interes');");
             if ($resultado->rowCount() == 1) {
                 return true;
             }
@@ -33,7 +32,7 @@
         }
         
         public static function eliminar(string $id): bool {
-            $resultado = self::consulta("DELETE FROM usuario WHERE id=$usuario");
+            $resultado = self::consulta("DELETE FROM usuario WHERE id=$id");
             if ($resultado->rowCount() == 1) {
                 return true;
             }
@@ -42,7 +41,7 @@
         
         public static function actualizar(Usuario $usuario): bool {
             [$id, $nombre, $password, $email, $localidad, $localidades_interes, $sectores_interes] = [$usuario->id, $usuario->nombre, $usuario->password, $usuario->email, $usuario->localidad, $usuario->localidades_interes, $usuario->sectores_interes];
-            $resultado = self::consulta("UPDATE usuario SET nombre='$nombre', password='$password', email='$email', localidad='$localidad', localidades_interes='$localidades_interes', sectores_interes='$sectores_interes' WHERE id=$usuario->id");
+            $resultado = self::consulta("UPDATE usuario SET nombre='$nombre', email='$email', password='$password', localidad='$localidad', localidades_interes='$localidades_interes', sectores_interes='$sectores_interes' WHERE id=$usuario->id");
             if ($resultado->rowCount() == 1) {
                 return true;
             }

@@ -9,6 +9,7 @@
   "author": "anfari",
   "license": "ISC",
   "dependencies": {
-    "puppeteer": "^13.6.0"
+    "puppeteer": "^13.6.0",
+    "request": "^2.88.2"
   }
 }

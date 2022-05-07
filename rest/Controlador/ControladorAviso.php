@@ -18,7 +18,7 @@
 
     if (isset($_POST['operacion']) && $_POST['operacion'] == 'obtener') {
         $id = $_POST['id'];
-        $aviso = Aviso::buscarAviso($id);
+        $aviso = ModeloAviso::buscarAviso($id);
         return $aviso;
     }
     
