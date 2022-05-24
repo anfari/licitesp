@@ -1,0 +1,59 @@
+<div class="container-fluid">
+    <div class="row d-flex justify-content-center mt-5">
+        <div class="col-auto p-4 bg-white rounded shadow-lg">
+            <form [formGroup]="formRegistro" (ngSubmit)="registrar()">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo electrónico</label>
+                    <input type="email" class="form-control" id="email" placeholder="email@example.com" formControlName="email">
+                    <div id="emailHelp" class="form-text">Nunca compartiremos tu correo con nadie.</div>
+                    <div class="error" *ngIf="(this.formRegistro.get('email')?.hasError('required') && this.formRegistro.get('email')?.touched)">
+                        El email es obligatorio.
+                    </div>
+                    <div class="error" *ngIf="(this.formRegistro.get('email')?.hasError('email') && this.formRegistro.get('email')?.touched)">
+                        El formato del email es incorrecto.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" formControlName="nombre">
+                    <div class="error" *ngIf="(this.formRegistro.get('nombre')?.hasError('required') && this.formRegistro.get('nombre')?.touched)">
+                        El nombre es obligatorio.
+                    </div>
+                    <div class="error" *ngIf="(this.formRegistro.get('nombre')?.hasError('pattern') && this.formRegistro.get('nombre')?.touched)">
+                        Solo se aceptan letras.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="localidad" class="form-label">Localidad</label>
+                    <input type="text" class="form-control" id="localidad" formControlName="localidad">
+                    <div class="error" *ngIf="(this.formRegistro.get('localidad')?.hasError('pattern') && this.formRegistro.get('localidad')?.touched)">
+                        Solo se aceptan letras.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" formControlName="password">
+                    <div class="error" *ngIf="(this.formRegistro.get('password')?.hasError('required') && this.formRegistro.get('password')?.touched)">
+                        La contraseña es obligatoria.
+                    </div>
+                    <div class="error" *ngIf="(this.formRegistro.get('password')?.hasError('pattern') && this.formRegistro.get('password')?.touched)">
+                        8 caracteres, may, minúsc y número.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="confirmPasword" class="form-label">Repetir Contraseña</label>
+                    <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword">
+                    <div class="error" *ngIf="(this.formRegistro.get('confirmPassword')?.hasError('required') && this.formRegistro.get('confirmPassword')?.touched)">
+                        La confirmación es obligatoria.
+                    </div>
+                    <div class="error" *ngIf="(this.formRegistro.get('confirmPassword')?.hasError('pattern') && this.formRegistro.get('confirmPassword')?.touched)">
+                        8 caracteres, may, minúsc y número.
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button [disabled]="formRegistro.invalid" type="submit" class="btn btn-primary">Registrarse</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

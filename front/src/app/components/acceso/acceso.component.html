@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <div class="row d-flex justify-content-center mt-5">
+        <div class="col-auto p-4 bg-white rounded shadow-lg">
+            <form [formGroup]="formAcceso" (ngSubmit)="acceder()">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo electrónico</label>
+                    <input type="email" class="form-control" id="email" placeholder="email@example.com" formControlName="email">
+                    <div id="emailHelp" class="form-text">Nunca compartiremos tu correo con nadie.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" formControlName="password">
+                </div>
+                <div class="mb-3">
+                    <a routerLink="/registro">¿Aún no te has registrado?</a>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Acceder</button>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>

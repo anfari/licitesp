@@ -1,56 +1,30 @@
 const puppeteer = require('puppeteer');
+const cron = require('node-cron');
 const url = "https://contrataciondelestado.es/wps/portal/!ut/p/b1/04_SjzSzMDYyN7GwMNCP0I_KSyzLTE8syczPS8wB8aPM4k1c_Z2d3TyMDCyCjV0MjHxcQkPNPIBcd1Oggkh8CoyI029q7GwS5hUWYBbs6W5g4Onh5uITamgK1G5GnH4DHMDRgJD-cP0o_EqMoArwORGsAI8b_Dzyc1P1c6Ny3NwsPbNMHBUVAcPF9YU!/dl4/d5/L2dBISEvZ0FBIS9nQSEh/pw/Z7_AVEQAI930OBRD02JPMTPG21004/act/id=0/p=javax.servlet.include.path_info=QCPjspQCPbusquedaQCPMainBusqueda.jsp/511976870194/-/";
 
-//var url = "http://licitesp/rest/Controlador/ControladorLicitacion.php";
-var data = '{"operacion": "listar"}';
 
-/*var request = require('request');
-request.post(
-    'http://licitesp/rest/Controlador/ControladorLicitacion.php',
-    { json: { 'operacion': 'listar' } },
-    function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            console.log(body);
-        }
-    }
-);*/
+cron.schedule('*/15 * * * *', function() {
+    getData();
+});
 
-var data = {
-    operacion:"listar"
- };
- var querystring = require("querystring");
- var qs = querystring.stringify(data);
- var qslength = qs.length;
- var options = {
-     hostname: "licitesp",
-     port: 80,
-     path: "rest/Controlador/ControladorLicitacion.php",
-     method: 'POST',
-     headers:{
-         'Content-Type': 'application/x-www-form-urlencoded',
-         'Content-Length': qslength
-     }
- };
- 
- var buffer = "";
- var req = http.request(options, function(res) {
-     res.on('data', function (chunk) {
-        buffer+=chunk;
-     });
-     res.on('end', function() {
-         console.log(buffer);
-     });
- });
- 
- req.write(qs);
- req.end();
+getData();
+async function getData() {
+    var licitaciones = [];
+    var request = require('request');
 
+    try {
+        let ultimaLicitacion = "";
+        let breakLoop = false;
+        request.get('http://licitesp/rest/Controlador/ControladorLicitacion.php?listar&pag=1&tamPag=1', {json: true}, (err, res, body) => {
+            if (!err) {
+                //console.log(body[0].expediente);
+                if (body[0]) {
+                    ultimaLicitacion = body[0].expediente;
+                }
+            }
+        })
 
-( async () => {
-    const licitaciones = [];
-
-    /*try {
-        const browser = await puppeteer.launch({ headless: false });
+        const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
 
         await page.goto(url);
@@ -66,9 +40,9 @@ var data = {
 
         const page2 = await browser.newPage();
         let x = 0;
-        while(await page.$('#viewns_Z7_AVEQAI930OBRD02JPMTPG21004_\\:form1\\:footerSiguiente') && x <= 0) {
+        while(await page.$('#viewns_Z7_AVEQAI930OBRD02JPMTPG21004_\\:form1\\:footerSiguiente') && x < 3 && !breakLoop) {
             x++;
-        for (let i = 0; i < 0; i++) {
+        for (let i = 0; i < 20; i++) {
             await page2.goto(page.url());
             await page2.waitForSelector('#myTablaBusquedaCustom');
             await page2.waitForTimeout(1000);
@@ -81,34 +55,47 @@ var data = {
                 element = await page2.$('#viewns_Z7_AVEQAI930OBRD02JPMTPG21006_\\:form1\\:text_OC_sin');
             }
             let organo_contratacion = await page2.evaluate(element => element.textContent, element);
+            //organo_contratacion = organo_contratacion.replace("/'/g", "\\'");
+            organo_contratacion = organo_contratacion.split("'").join("\\'");
+            element = await page2.$('#viewns_Z7_AVEQAI930OBRD02JPMTPG21006_\\:form1\\:text_Expediente');
+            let expediente = await page2.evaluate(element => element.textContent, element);
+
+            if (expediente == ultimaLicitacion) {
+                break;
+            }
+
             element = await page2.$('#viewns_Z7_AVEQAI930OBRD02JPMTPG21006_\\:form1\\:text_ObjetoContrato');
             let objeto_contrato = await page2.evaluate(element => element.textContent, element);
+            //objeto_contrato = objeto_contrato.replace("/'/g", "\\'");
+            objeto_contrato = objeto_contrato.split("'").join("\\'");
             element = await page2.$('#viewns_Z7_AVEQAI930OBRD02JPMTPG21006_\\:form1\\:text_ValorContrato');
             let valor_estimado = await page2.evaluate(element => element.textContent, element);
             element = await page2.$('#viewns_Z7_AVEQAI930OBRD02JPMTPG21006_\\:form1\\:text_TipoContrato');
             let tipo = await page2.evaluate(element => element.textContent, element);
             element = await page2.$('#viewns_Z7_AVEQAI930OBRD02JPMTPG21006_\\:form1\\:text_LugarEjecucion');
-            let lugar_ejecucion = await page2.evaluate(element => element.textContent, element);
+            let le = await page2.evaluate(element => element.textContent, element);
+            let lugar_ejecucion = le.substring(9);
             element = await page2.$('#viewns_Z7_AVEQAI930OBRD02JPMTPG21006_\\:form1\\:text_FechaPresentacionOfertaConHora');
-            let plazo_ejecucion = "";
+            let plazo = "";
             if (element != null) {
-                plazo_ejecucion = await page2.evaluate(element => element.textContent, element);
+                plazo = await page2.evaluate(element => element.textContent, element);
             }
             if (element == null) {
                 element = await page2.$('#viewns_Z7_AVEQAI930OBRD02JPMTPG21006_\\:form1\\:text_FechaLimiteSolicitudParticipacionConHora');
-                plazo_ejecucion = await page2.evaluate(element => element.textContent, element);
+                plazo = await page2.evaluate(element => element.textContent, element);
             }
-            
+            let enlace = page2.url().replace(":", "\:");
 
 
             const licitacion = {
+                "expediente":expediente,
                 "organo_contratacion":organo_contratacion,
                 "objeto_contrato":objeto_contrato,
                 "valor_estimado":valor_estimado,
                 "tipo":tipo,
                 "lugar_ejecucion":lugar_ejecucion,
-                "plazo_ejecucion":plazo_ejecucion,
-                "url":page2.url()
+                "plazo":plazo,
+                "enlace":enlace
             }
 
             licitaciones.push(licitacion);
@@ -121,25 +108,36 @@ var data = {
         
 
         console.log(licitaciones.length);
+        console.log(licitaciones);
 
         await page.close();
         await browser.close();
 
-        /*const userAction = async () => {
-            const response = await fetch('http://licitesp/movies.json', {
-              method: 'POST',
-              body: myBody, // string or object
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            });
-            const myJson = await response.json(); //extract JSON from the http response
-            // do something with myJson
-        }*/
-/*
+        
+        request.post(
+            'http://licitesp/rest/Controlador/ControladorLicitacion.php',
+            { json: {data: JSON.stringify(licitaciones)} },
+            function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    console.log(body);
+                }
+            }
+        );
+        console.log(licitaciones.length);
+
     } catch (e) {
         console.log(e);
         console.log(licitaciones);
         console.log(licitaciones.length);
-    }*/
-})();
+
+        request.post(
+            'http://licitesp/rest/Controlador/ControladorLicitacion.php',
+            { json: {data: JSON.stringify(licitaciones)} },
+            function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    console.log(body);
+                }
+            }
+        );
+    }
+};

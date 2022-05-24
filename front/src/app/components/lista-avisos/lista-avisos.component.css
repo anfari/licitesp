@@ -1,0 +1,13 @@
+#lista-avisos {
+    height: 600px;
+    overflow-y: scroll;
+}
+
+h4 {
+    color: #1464A5;
+    font-weight: bold;
+}
+
+.active {
+    background-color: #1464A5 !important;
+}

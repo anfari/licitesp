@@ -1,0 +1,88 @@
+<div class="container-fluid">
+    <div class="row mt-5">
+        <div class="col-10 col-md-3 order-md-0 order-1 offset-1 me-2" >
+            <li class="list-group-item text-center rounded"><h4>Listado de Avisos</h4></li>
+            <ul class="list-group bg-white shadow rounded mx-0" id="lista-avisos">
+                <li *ngIf="avisos.length == 0" class="list-group-item text-center">No tienes avisos</li>
+                <li (click)="getLicitacion(aviso.licitacion)" *ngFor="let aviso of avisos" id="{{aviso.id}}" class="list-group-item">La licitacion {{aviso.licitacion}} cumple sus criterios.</li>
+            </ul>
+        </div>
+        <div *ngIf="licitacion" class="col-12 col-md-7 order-md-1 order-0">
+            <div class="card mb-4 shadow">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Expediente</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{licitacion.expediente}}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Organo de contratación</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{licitacion.organo_contratacion}}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Objeto de contrato</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{licitacion.objeto_contrato}}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Valor estimado</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{licitacion.valor_estimado}}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Tipos de contrato</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{licitacion.tipo}}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Lugar de ejecución</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{licitacion.lugar_ejecucion}}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Plazo</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{licitacion.plazo}}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Página oficial</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <a href="https://contrataciondelestado.es/wps/portal/licitaciones">Busca más detalles de tu licitación aquí</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

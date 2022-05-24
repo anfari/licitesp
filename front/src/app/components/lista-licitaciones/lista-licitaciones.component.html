@@ -1,0 +1,104 @@
+<div class="container-fluid mt-4">
+    <div class="row mx-3 gx-5 d-flex justify-content-evenly">
+        <div class="col-12 d-flex justify-content-center">
+            <h3>Listado de Licitaciones</h3>
+        </div>
+        <div class="col-11 col-lg-9">
+            <div class="row border rounded bg-white shadow p-2 mb-3">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Expediente</th>
+                            <th scope="col">Objeto de Contrato</th>
+                            <th scope="col">Tipo de Contrato</th>
+                            <th scope="col">Lugar de Ejecución</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let licitacion of licitaciones">
+                            <th scope="row">{{licitacion.expediente}}</th>
+                            <td>{{licitacion.objeto_contrato}}</td>
+                            <td>{{licitacion.tipo}}</td>
+                            <td>{{licitacion.lugar_ejecucion}}</td>
+                            <td><button class="btn btn-primary" (click)="consultar(licitacion)">Consultar</button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            <p class="page-link" aria-label="Previous" (click)="paginar(1)">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                            </p>
+                        </li>
+                        <li class="page-item">
+                            <p class="page-link" aria-label="Previous" (click)="paginar(getPag()-1)">
+                            <span aria-hidden="true">&laquo;</span>
+                            </p>
+                        </li>
+                        <li class="page-item"><p class="page-link">{{getPag()}}</p></li>
+                        <li class="page-item">
+                            <p class="page-link" aria-label="Next" (click)="paginar(getPag()+1)">
+                            <span aria-hidden="true">&raquo;</span>
+                            </p>
+                        </li>
+                        <li class="page-item">
+                            <p class="page-link"  aria-label="Next" (click)="paginar(getMaxPag())">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                            </p>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="col-10 col-lg-3 border rounded h-50 d-inline-block bg-white shadow">
+            <h4 class="text-center mt-2">Formulario de Búsqueda</h4>
+            <form id="searchForm">
+                <div class="row g-3 align-items-center mt-3">
+                    <div class="col-5">
+                        <label for="expediente" class="col-form-label">Expediente</label>
+                    </div>
+                    <div class="col-7">
+                        <input type="text" id="expediente" class="form-control">
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1">
+                    <div class="col-5">
+                        <label for="contratante" class="col-form-label">Contratante</label>
+                    </div>
+                    <div class="col-7">
+                        <input type="text" id="contratante" class="form-control">
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1">
+                    <div class="col-5">
+                        <label for="lugar" class="col-form-label">Lugar de Ejecución</label>
+                    </div>
+                    <div class="col-7">
+                        <select class="form-select" id="lugar">
+                            <option value="" selected>-- Todos --</option>
+                            <option *ngFor="let lugar of getLugares()" value="{{lugar}}">{{lugar}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1">
+                    <div class="col-5">
+                        <label for="lugar" class="col-form-label">Tipo</label>
+                    </div>
+                    <div class="col-7">
+                        <select class="form-select" id="tipo">
+                            <option value="" selected>-- Todos --</option>
+                            <option *ngFor="let tipo of getTipos()" value="{{tipo}}">{{tipo}}</option>
+                          </select>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="btn btn-success mt-4 mb-3" (click)="search()">Filtrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

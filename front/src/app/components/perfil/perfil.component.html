@@ -1,0 +1,48 @@
+<div class="card mb-4 shadow">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Nombre</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{getUsuario().nombre}}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Email</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{getUsuario().email}}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Localidad</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{getUsuario().localidad}}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Lugares de ejecución de interés</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{getUsuario().lugares_interes | addSpace}}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Tipos de contrato de interés</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{getUsuario().tipos_interes | addSpace}}</p>
+            </div>
+        </div>
+    </div>
+</div>

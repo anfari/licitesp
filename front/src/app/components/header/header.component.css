@@ -1,0 +1,16 @@
+header {
+    background-color: #eee;
+}
+nav {
+    background-color: #002967 !important;
+}
+
+.btn-primary {
+    background-color: #1464A5;
+    border: 0;
+}
+
+.btn-success {
+    background-color: #106B21;
+    border: 0;
+}

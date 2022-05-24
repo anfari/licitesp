@@ -3,7 +3,15 @@
     use PDO, PDOException;
     require_once ("Usuario.php");
     
+    /**
+     * Clase ModeloUsuario con las funciones de conexion a la BBDD, CRUD y demas
+     */
     class ModeloUsuario {
+        /**
+         * Funcion encargada de realizar la consulta a la base de datos
+         * 
+         * $sql -> sentencia a ejecutar
+         */
         public static function consulta(string $sql) {
             [$host,$usuario,$passwd,$bd]=['localhost','licitesp','12345678','licitesp'];
             try {
@@ -16,41 +24,58 @@
             return $resultado;
         }
         
+        /**
+         * Funcion encargada de insertar un usuario en la base de datos
+         * 
+         * $usuario -> usuario a insertar
+         */
         public static function insertar(Usuario $usuario): bool {
-            if ($usuario->id != null) {
-                $resultado = self::consulta("SELECT * FROM usuario WHERE id=$usuario->id");
+            if ($usuario->email != null) {
+                $resultado = self::consulta("SELECT * FROM usuario WHERE email='$usuario->email'");
                 if ($resultado->fetch(PDO::FETCH_ASSOC) != null) {
                     return false;
                 }
             }
-            [$id, $nombre, $password, $email, $localidad, $localidades_interes, $sectores_interes] = [$usuario->id, $usuario->nombre, $usuario->password, $usuario->email, $usuario->localidad, $usuario->localidades_interes, $usuario->sectores_interes];
-            $resultado = self::consulta("INSERT INTO usuario VALUES($id, '$nombre', '$email', '$password', '$localidad', '$localidades_interes', '$sectores_interes');");
+            [$email, $nombre, $passwd, $localidad, $lugares_interes, $tipos_interes] = [$usuario->email, $usuario->nombre, $usuario->passwd, $usuario->localidad, $usuario->lugares_interes, $usuario->tipos_interes];
+            $resultado = self::consulta("INSERT INTO usuario (email, nombre, passwd, localidad, lugares_interes, tipos_interes) VALUES('$email', '$nombre', '$passwd', '$localidad', '$lugares_interes', '$tipos_interes');");
             if ($resultado->rowCount() == 1) {
                 return true;
             }
             return false;
         }
         
-        public static function eliminar(string $id): bool {
-            $resultado = self::consulta("DELETE FROM usuario WHERE id=$id");
+        /**
+         * Funcion encargada de eliminar un usuario de la base de datos
+         * 
+         * $email -> email del usuario a eliminar
+         */
+        public static function eliminar(string $email): bool {
+            $resultado = self::consulta("DELETE FROM usuario WHERE email=$email");
             if ($resultado->rowCount() == 1) {
                 return true;
             }
             return false;
         }
         
+        /**
+         * Funcion encargada de actualizar un usuario en la base de datos
+         * 
+         * $usuario -> nuevos datos del usuario a actualizar
+         */
         public static function actualizar(Usuario $usuario): bool {
-            [$id, $nombre, $password, $email, $localidad, $localidades_interes, $sectores_interes] = [$usuario->id, $usuario->nombre, $usuario->password, $usuario->email, $usuario->localidad, $usuario->localidades_interes, $usuario->sectores_interes];
-            $resultado = self::consulta("UPDATE usuario SET nombre='$nombre', email='$email', password='$password', localidad='$localidad', localidades_interes='$localidades_interes', sectores_interes='$sectores_interes' WHERE id=$usuario->id");
+            [$email, $nombre, $passwd, $localidad, $lugares_interes, $tipos_interes] = [$usuario->email, $usuario->nombre, $usuario->passwd, $usuario->localidad, $usuario->lugares_interes, $usuario->tipos_interes];
+            $resultado = self::consulta("UPDATE usuario SET nombre='$nombre', passwd='$passwd', localidad='$localidad', lugares_interes='$lugares_interes', tipos_interes='$tipos_interes' WHERE email='$email'");
             if ($resultado->rowCount() == 1) {
                 return true;
             }
             return false;
         }
         
-        public static function listar(int $numPag=1, int $tamPag=10): array {
-            $inicio = ($numPag-1)*$tamPag;
-            $resultado = self::consulta("SELECT * FROM usuario LIMIT $inicio, $tamPag");
+        /**
+         * Funcion encargada de listar los usuarios de la base de datos
+         */
+        public static function listar(): array {
+            $resultado = self::consulta("SELECT * FROM usuario");
             $lista = [];
             while ($usuario = $resultado->fetch(PDO::FETCH_ASSOC)) {
                 array_push($lista, Usuario::getUsuario($usuario));
@@ -58,16 +83,28 @@
             return $lista;
         }
         
+        /**
+         * Funcion encargada de devolver el numero de usuarios existentes
+         */
         public static function numUsuarios() {
             $resultado = self::consulta("SELECT count(*) as numUsuarios FROM usuario");
             $count = $resultado->fetch(PDO::FETCH_ASSOC);
             return intval($count['numUsuarios']);
         }
         
-        public static function buscarUsuario($codigo) {
-            $resultado = self::consulta("SELECT * FROM producto WHERE codigo='".$codigo."'");
-            $producto = Usuario::getUsuario($resultado->fetch(PDO::FETCH_ASSOC));
-            return $producto;
+        /**
+         * Funcion encargada de buscar y devolver un usuario concreto
+         * 
+         * $email -> email del usuario a buscar
+         */
+        public static function buscarUsuario($email) {
+            $resultado = self::consulta("SELECT * FROM usuario WHERE email='$email'");
+            $tmpUsuario = $resultado->fetch(PDO::FETCH_ASSOC);
+            if ($tmpUsuario) {
+                $usuario = Usuario::getUsuario($tmpUsuario);
+                return $usuario;
+            }
+            return null;
         }
     }
     
